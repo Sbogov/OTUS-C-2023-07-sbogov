@@ -1,20 +1,72 @@
-﻿// HW1.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
-//
+﻿#include <stdlib.h>
+#include <stdio.h>
 
-#include <iostream>
-
-int main()
-{
-    std::cout << "Hello World!\n";
+double* init_array(int n_numbers, char** numbers) {
+    double* massiv = malloc(sizeof(double) * n_numbers);
+    //TODO Check
+    for (int i = 0; i < n_numbers; i++) {
+        massiv[i] = atof(numbers[i]);
+        //TODO Check and ???
+    }
+    return massiv;
 }
 
-// Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
-// Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
+void de_init_array(double* massiv) {
+    free(massiv);
+}
 
-// Советы по началу работы 
-//   1. В окне обозревателя решений можно добавлять файлы и управлять ими.
-//   2. В окне Team Explorer можно подключиться к системе управления версиями.
-//   3. В окне "Выходные данные" можно просматривать выходные данные сборки и другие сообщения.
-//   4. В окне "Список ошибок" можно просматривать ошибки.
-//   5. Последовательно выберите пункты меню "Проект" > "Добавить новый элемент", чтобы создать файлы кода, или "Проект" > "Добавить существующий элемент", чтобы добавить в проект существующие файлы кода.
-//   6. Чтобы снова открыть этот проект позже, выберите пункты меню "Файл" > "Открыть" > "Проект" и выберите SLN-файл.
+
+double summa(int n,double* elem) {
+    double sum = 0;
+    for (int i = 0; i < n; i++) {
+         sum += elem[i];
+        }
+        printf("summa = %f\n", sum);
+     return 0;
+}
+
+double multiplication(int n, double* elem){
+    double multpl = 1;
+    for (int i = 0; i < n; i++) {
+        multpl *= elem[i];
+    }
+    printf("multiplication = %f\n", multpl);
+    return 0;
+}
+
+double arithmetic_mean(int n, double* elem) {
+    double sredn = 0;
+    double sum = 0;
+    for (int i = 0; i < n; i++)
+        sum += elem[i];
+    sredn = sum / n;
+    printf("arithmetic mean = %f", sredn);
+    return 0;
+}
+
+int run_main(int argc, char* argv[]) {
+    if (argc < 2) {
+        printf("Необходимо ввести больше одного элемента\n");
+        return -1;
+    }
+    double* mass = init_array((argc - 1), &argv[1]);
+    if (!mass) {
+        return -1;
+    }
+    summa ((argc-1), mass);
+    multiplication ((argc - 1), mass);
+    arithmetic_mean ((argc - 1), mass);
+    de_init_array (mass);
+    return 0;
+}
+
+int main(int argc, char* argv[]) {
+    argc = 3;
+    char* args[3] = {argv[0], "3", "5"};
+    int result = run_main(argc, args);
+    if (result) {
+        printf("run_main failed - %d\n", result);
+        return result;
+    };
+    return 0;
+}
