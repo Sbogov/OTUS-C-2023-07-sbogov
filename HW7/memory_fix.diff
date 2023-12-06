@@ -1,0 +1,91 @@
+Binary files ./clib/deps/asprintf/asprintf.o and ./clib_origin/deps/asprintf/asprintf.o differ
+Binary files ./clib/deps/case/case.o and ./clib_origin/deps/case/case.o differ
+Binary files ./clib/deps/commander/commander.o and ./clib_origin/deps/commander/commander.o differ
+Binary files ./clib/deps/console-colors/console-colors.o and ./clib_origin/deps/console-colors/console-colors.o differ
+Binary files ./clib/deps/copy/copy.o and ./clib_origin/deps/copy/copy.o differ
+Binary files ./clib/deps/debug/debug.o and ./clib_origin/deps/debug/debug.o differ
+Binary files ./clib/deps/fs/fs.o and ./clib_origin/deps/fs/fs.o differ
+Binary files ./clib/deps/gumbo-get-element-by-id/get-element-by-id.o and ./clib_origin/deps/gumbo-get-element-by-id/get-element-by-id.o differ
+Binary files ./clib/deps/gumbo-get-elements-by-tag-name/get-elements-by-tag-name.o and ./clib_origin/deps/gumbo-get-elements-by-tag-name/get-elements-by-tag-name.o differ
+Binary files ./clib/deps/gumbo-parser/attribute.o and ./clib_origin/deps/gumbo-parser/attribute.o differ
+Binary files ./clib/deps/gumbo-parser/char_ref.o and ./clib_origin/deps/gumbo-parser/char_ref.o differ
+Binary files ./clib/deps/gumbo-parser/error.o and ./clib_origin/deps/gumbo-parser/error.o differ
+Binary files ./clib/deps/gumbo-parser/parser.o and ./clib_origin/deps/gumbo-parser/parser.o differ
+Binary files ./clib/deps/gumbo-parser/string_buffer.o and ./clib_origin/deps/gumbo-parser/string_buffer.o differ
+Binary files ./clib/deps/gumbo-parser/string_piece.o and ./clib_origin/deps/gumbo-parser/string_piece.o differ
+Binary files ./clib/deps/gumbo-parser/tag.o and ./clib_origin/deps/gumbo-parser/tag.o differ
+Binary files ./clib/deps/gumbo-parser/tokenizer.o and ./clib_origin/deps/gumbo-parser/tokenizer.o differ
+Binary files ./clib/deps/gumbo-parser/utf8.o and ./clib_origin/deps/gumbo-parser/utf8.o differ
+Binary files ./clib/deps/gumbo-parser/util.o and ./clib_origin/deps/gumbo-parser/util.o differ
+Binary files ./clib/deps/gumbo-parser/vector.o and ./clib_origin/deps/gumbo-parser/vector.o differ
+Binary files ./clib/deps/gumbo-text-content/gumbo-text-content.o and ./clib_origin/deps/gumbo-text-content/gumbo-text-content.o differ
+Binary files ./clib/deps/hash/hash.o and ./clib_origin/deps/hash/hash.o differ
+Binary files ./clib/deps/http-get/http-get.o and ./clib_origin/deps/http-get/http-get.o differ
+Binary files ./clib/deps/list/list.o and ./clib_origin/deps/list/list.o differ
+Binary files ./clib/deps/list/list_iterator.o and ./clib_origin/deps/list/list_iterator.o differ
+Binary files ./clib/deps/list/list_node.o and ./clib_origin/deps/list/list_node.o differ
+Binary files ./clib/deps/mkdirp/mkdirp.o and ./clib_origin/deps/mkdirp/mkdirp.o differ
+Binary files ./clib/deps/occurrences/occurrences.o and ./clib_origin/deps/occurrences/occurrences.o differ
+Binary files ./clib/deps/parse-repo/parse-repo.o and ./clib_origin/deps/parse-repo/parse-repo.o differ
+Binary files ./clib/deps/parson/parson.o and ./clib_origin/deps/parson/parson.o differ
+Binary files ./clib/deps/path-join/path-join.o and ./clib_origin/deps/path-join/path-join.o differ
+Binary files ./clib/deps/path-normalize/path-normalize.o and ./clib_origin/deps/path-normalize/path-normalize.o differ
+Binary files ./clib/deps/rimraf/rimraf.o and ./clib_origin/deps/rimraf/rimraf.o differ
+Binary files ./clib/deps/str-concat/str-concat.o and ./clib_origin/deps/str-concat/str-concat.o differ
+Binary files ./clib/deps/str-ends-with/str-ends-with.o and ./clib_origin/deps/str-ends-with/str-ends-with.o differ
+Binary files ./clib/deps/str-flatten/str-flatten.o and ./clib_origin/deps/str-flatten/str-flatten.o differ
+Binary files ./clib/deps/str-replace/str-replace.o and ./clib_origin/deps/str-replace/str-replace.o differ
+Binary files ./clib/deps/str-starts-with/str-starts-with.o and ./clib_origin/deps/str-starts-with/str-starts-with.o differ
+Binary files ./clib/deps/strdup/strdup.o and ./clib_origin/deps/strdup/strdup.o differ
+Binary files ./clib/deps/substr/substr.o and ./clib_origin/deps/substr/substr.o differ
+Binary files ./clib/deps/tempdir/tempdir.o and ./clib_origin/deps/tempdir/tempdir.o differ
+Binary files ./clib/deps/trim/trim.o and ./clib_origin/deps/trim/trim.o differ
+Binary files ./clib/deps/which/which.o and ./clib_origin/deps/which/which.o differ
+Binary files ./clib/deps/wiki-registry/wiki-registry.o and ./clib_origin/deps/wiki-registry/wiki-registry.o differ
+Binary files ./clib/deps/wildcardcmp/wildcardcmp.o and ./clib_origin/deps/wildcardcmp/wildcardcmp.o differ
+Binary files ./clib/src/common/clib-cache.o and ./clib_origin/src/common/clib-cache.o differ
+diff -ruN ./clib/src/common/clib-package.c ./clib_origin/src/common/clib-package.c
+--- ./clib/src/common/clib-package.c	2023-12-07 00:53:50.108197300 +0300
++++ ./clib_origin/src/common/clib-package.c	2020-09-08 02:51:23.000000000 +0300
+@@ -657,8 +657,6 @@
+ #ifdef HAVE_PTHREADS
+       init_curl_share();
+       _debug("GET %s", json_url);
+-	  // очистка при повторной попытке
+-      http_get_free(res);
+       res = http_get_shared(json_url, clib_package_curl_share);
+ #else
+       res = http_get(json_url);
+@@ -1004,7 +1002,7 @@
+   *status = rc;
+   (void)data->pkg->refs--;
+   pthread_exit((void *)status);
+-  return (void *)(intptr_t)rc;
++  return (void *)rc;
+ }
+ #endif
+ 
+@@ -1382,9 +1380,7 @@
+ #ifdef HAVE_PTHREADS
+     pthread_mutex_lock(&lock.mutex);
+ #endif
+-	if (!hash_has(visited_packages, pkg->name)) {
+-		hash_set(visited_packages, strdup(pkg->name), "t");
+-	}
++    hash_set(visited_packages, strdup(pkg->name), "t");
+ #ifdef HAVE_PTHREADS
+     pthread_mutex_unlock(&lock.mutex);
+ #endif
+Binary files ./clib/src/common/clib-package.o and ./clib_origin/src/common/clib-package.o differ
+Binary files ./clib/test/package/package-dependency-new and ./clib_origin/test/package/package-dependency-new differ
+Binary files ./clib/test/package/package-install and ./clib_origin/test/package/package-install differ
+Binary files ./clib/test/package/package-install-dependencies and ./clib_origin/test/package/package-install-dependencies differ
+Binary files ./clib/test/package/package-install-dev-dependencies and ./clib_origin/test/package/package-install-dev-dependencies differ
+Binary files ./clib/test/package/package-load-from-manifest and ./clib_origin/test/package/package-load-from-manifest differ
+Binary files ./clib/test/package/package-load-manifest-file and ./clib_origin/test/package/package-load-manifest-file differ
+Binary files ./clib/test/package/package-new and ./clib_origin/test/package/package-new differ
+Binary files ./clib/test/package/package-new-from-slug and ./clib_origin/test/package/package-new-from-slug differ
+Binary files ./clib/test/package/package-parse-author and ./clib_origin/test/package/package-parse-author differ
+Binary files ./clib/test/package/package-parse-name and ./clib_origin/test/package/package-parse-name differ
+Binary files ./clib/test/package/package-parse-version and ./clib_origin/test/package/package-parse-version differ
+Binary files ./clib/test/package/package-url and ./clib_origin/test/package/package-url differ

@@ -657,8 +657,6 @@ clib_package_new_from_slug_with_package_name(const char *slug, int verbose,
 #ifdef HAVE_PTHREADS
       init_curl_share();
       _debug("GET %s", json_url);
-	  // очистка при повторной попытке
-      http_get_free(res);
       res = http_get_shared(json_url, clib_package_curl_share);
 #else
       res = http_get(json_url);
@@ -1004,7 +1002,7 @@ static void *fetch_package_file_thread(void *arg) {
   *status = rc;
   (void)data->pkg->refs--;
   pthread_exit((void *)status);
-  return (void *)(intptr_t)rc;
+  return (void *)rc;
 }
 #endif
 
@@ -1382,9 +1380,7 @@ int clib_package_install(clib_package_t *pkg, const char *dir, int verbose) {
 #ifdef HAVE_PTHREADS
     pthread_mutex_lock(&lock.mutex);
 #endif
-	if (!hash_has(visited_packages, pkg->name)) {
-		hash_set(visited_packages, strdup(pkg->name), "t");
-	}
+    hash_set(visited_packages, strdup(pkg->name), "t");
 #ifdef HAVE_PTHREADS
     pthread_mutex_unlock(&lock.mutex);
 #endif

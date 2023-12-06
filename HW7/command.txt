@@ -1,0 +1,5 @@
+diff -ruN ./clib/ ./clib_origin/ > memory_fix.diff
+команда для создания патча
+
+patch -p0 < memory_fix.diff
+для применения патча
